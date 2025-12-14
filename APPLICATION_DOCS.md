@@ -127,6 +127,21 @@ erDiagram
 ### 6. Analytics & Stats
 - **Cooking Dashboard**: Track meals cooked, favorite recipes, and total cooking time.
 - **Recipe Popularity**: See which recipes are cooked most often.
+### 7. Household Roles & Permissions
+- **Head Chef**: The household admin. Full control over settings, member management, and invite codes. Access to the Admin Dashboard.
+- **Sous Chef**: Can manage recipes, meal plans, and pantry. Cannot manage household members.
+- **Line Cook**: Read-only access. Can use Cook Mode and view recipes but cannot make changes.
+
+### 8. Admin Dashboard (Head Chef Only)
+- **Overview Stats**: View total members, recipe counts, and membership breakdown.
+- **User Management**: View all household members, change their roles (promote/demote), or remove them.
+- **Role Distribution**: Visual breakdown of roles within the household.
+
+### 9. Account Management
+- **Password Reset**: Secure email-based password reset flow.
+  - Forgot Password link on login screen.
+  - Email with secure, time-limited reset token.
+  - Frontend form to set a new password.
 
 ## Key Workflows
 
@@ -192,3 +207,6 @@ erDiagram
 | Cooking Analytics | ✅ Complete | Dashboard with stats |
 | Amazon Links | ✅ Complete | Quick search from shopping list |
 | Price Estimation | ⏳ Planned | Requires external price API |
+| Password Reset | ✅ Complete | Email-based secure reset flow |
+| Role Management | ✅ Complete | Head Chef/Sous Chef/Line Cook roles |
+| Admin Dashboard | ✅ Complete | Household stats and member management |

@@ -84,6 +84,48 @@ The application is fully containerized with Docker.
 | `DATABASE_URL` | PostgreSQL connection (production) |
 | `DEVISE_JWT_SECRET_KEY` | JWT signing key |
 
+## Household Role System
+
+### Overview
+Recipe Box uses a **household-based role system** with thematic kitchen titles.
+
+### Roles
+| Role | Permission Level | Description |
+|------|------------------|-------------|
+| **Head Chef** | Admin/Owner | Full control. Manages members, deletes household. |
+| **Sous Chef** | Editor/Member | Can add/edit recipes, plan meals. Default for new members. |
+| **Line Cook** | Helper/Viewer | Read-only. Can use Cook Mode and check off items. |
+
+### Implementation
+- Roles stored in `household_members.role` as integer enum
+- Authorization via `RoleAuthorization` concern with helpers:
+  - `require_head_chef!` - Admin-only endpoints
+  - `require_sous_chef_or_above!` - Editor endpoints
+
+### Admin Endpoints
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/admin/stats` | GET | Household statistics |
+| `/api/v1/admin/users` | GET | List household members |
+| `/api/v1/admin/users/:id` | PUT | Change member role |
+| `/api/v1/admin/users/:id` | DELETE | Remove member |
+
+## Password Reset
+
+### Flow
+1. User requests reset via `POST /api/password` with email
+2. Devise sends email with token
+3. User clicks link → `/password/edit?reset_password_token=...`
+4. User submits new password via `PUT /api/password`
+
+### Environment Variables for Email
+| Variable | Description |
+|----------|-------------|
+| `SMTP_ADDRESS` | SMTP server (default: smtp.gmail.com) |
+| `SMTP_USERNAME` | SMTP username |
+| `SMTP_PASSWORD` | SMTP password |
+| `FRONTEND_URL` | Base URL for email links |
+
 ### Frontend
 | Variable | Description |
 |----------|-------------|

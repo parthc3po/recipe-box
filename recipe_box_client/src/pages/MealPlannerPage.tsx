@@ -198,9 +198,9 @@ export default function MealPlannerPage() {
     return (
         <>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <div className="flex gap-6 h-[calc(100vh-10rem)]">
+                <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 min-h-[calc(100vh-10rem)]">
                     {/* Recipe Sidebar */}
-                    <div className="w-64 flex-shrink-0 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 p-4 overflow-hidden flex flex-col">
+                    <div className="w-full lg:w-64 flex-shrink-0 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 p-4 overflow-hidden flex flex-col max-h-48 lg:max-h-none">
                         <div className="flex gap-2 mb-4 border-b border-white/10 pb-2 overflow-x-auto">
                             <button
                                 onClick={() => setSidebarTab('recipes')}
@@ -287,30 +287,30 @@ export default function MealPlannerPage() {
                     {/* Calendar Grid */}
                     <div className="flex-1 flex flex-col overflow-hidden">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                                <Calendar className="w-7 h-7" /> Meal Planner
+                            <h2 className="text-xl lg:text-2xl font-bold text-white flex items-center gap-2">
+                                <Calendar className="w-6 h-6 lg:w-7 lg:h-7" /> Meal Planner
                             </h2>
-                            <div className="flex items-center gap-2">
-                                <button onClick={prevWeek} className="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg">
-                                    ← Prev
+                            <div className="flex items-center gap-1 lg:gap-2 flex-wrap">
+                                <button onClick={prevWeek} className="px-2 lg:px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm">
+                                    ←
                                 </button>
-                                <span className="text-gray-300">
+                                <span className="text-gray-300 text-xs lg:text-base">
                                     {weekDates[0].toLocaleDateString()} - {weekDates[6].toLocaleDateString()}
                                 </span>
-                                <button onClick={nextWeek} className="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg">
-                                    Next →
+                                <button onClick={nextWeek} className="px-2 lg:px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm">
+                                    →
                                 </button>
                                 <button
                                     onClick={() => setShowGenModal(true)}
-                                    className="ml-4 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg flex items-center gap-2"
+                                    className="ml-2 lg:ml-4 px-3 lg:px-4 py-1.5 lg:py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg flex items-center gap-1 lg:gap-2 text-sm"
                                 >
                                     <Wand2 className="w-4 h-4" />
-                                    Generate Plan
+                                    <span className="hidden sm:inline">Generate</span>
                                 </button>
                             </div>
                         </div>
 
-                        <div className="flex-1 grid grid-cols-7 gap-2 overflow-y-auto">
+                        <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 overflow-y-auto">
                             {weekDates.map((date) => (
                                 <div key={formatDate(date)} className="bg-white/5 rounded-xl p-2 flex flex-col">
                                     <div className="text-center text-gray-300 text-sm font-medium mb-2 border-b border-white/10 pb-1">

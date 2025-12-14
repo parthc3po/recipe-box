@@ -14,6 +14,10 @@ import ShoppingListPage from './pages/ShoppingListPage';
 import CookingModePage from './pages/CookingModePage';
 import StatsPage from './pages/StatsPage';
 import SettingsPage from './pages/SettingsPage';
+import AdminDashboard from './pages/admin/Dashboard';
+import UserManagement from './pages/admin/UserManagement';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import './index.css';
 
 function App() {
@@ -23,6 +27,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/password/edit" element={<ResetPassword />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/recipes/:id/cook" element={<CookingModePage />} />
             <Route element={<Layout />}>
@@ -36,6 +42,8 @@ function App() {
               <Route path="/shopping-list" element={<ShoppingListPage />} />
               <Route path="/stats" element={<StatsPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/users" element={<UserManagement />} />
             </Route>
           </Route>
         </Routes>

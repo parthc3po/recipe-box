@@ -214,7 +214,7 @@ export default function RecipeEditor() {
                         <LinkIcon className="w-5 h-5" />
                         Import from URL
                     </h2>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                         <input
                             type="url"
                             value={importUrl}
@@ -265,7 +265,7 @@ export default function RecipeEditor() {
                         />
                     </div>
 
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label htmlFor="prepTime" className="block text-sm font-medium text-gray-300 mb-2">Prep Time (min)</label>
                             <input
@@ -313,8 +313,8 @@ export default function RecipeEditor() {
                     </div>
 
                     {/* Nutrition Section */}
-                    <div className="grid grid-cols-4 gap-4 pt-4 border-t border-white/10">
-                        <div className="col-span-4 flex items-center justify-between">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-white/10">
+                        <div className="col-span-full flex items-center justify-between">
                             <label className="block text-sm font-medium text-gray-300">Nutrition (per serving)</label>
                             <button
                                 type="button"
