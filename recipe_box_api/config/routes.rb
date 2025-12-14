@@ -8,7 +8,8 @@ Rails.application.routes.draw do
              },
              controllers: {
                sessions: 'users/sessions',
-               registrations: 'users/registrations'
+               registrations: 'users/registrations',
+               passwords: 'users/passwords'
              }
 
   namespace :api do
@@ -44,6 +45,12 @@ Rails.application.routes.draw do
         end
       end
       resources :households, only: %i[show update]
+
+      # Admin Panel
+      namespace :admin do
+        resources :users
+        resources :stats, only: %i[index]
+      end
     end
   end
 

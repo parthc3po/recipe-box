@@ -58,3 +58,5 @@ gem "devise"
 gem "devise-jwt"
 gem "jsonapi-serializer"
 gem "httparty"
+
+gem "letter_opener", "~> 1.10", :groups => [:development, :test]
