@@ -90,8 +90,8 @@ production:
   primary: &primary_production
     <<: *default
     database: recipe_box_api_production
-    username: recipe_box_api
-    password: <%= ENV["RECIPE_BOX_API_DATABASE_PASSWORD"] %>
+    username: <%= ENV.fetch("DB_USERNAME") { "recipe_box_api" } %>
+    password: <%= ENV.fetch("DB_PASSWORD") { ENV["RECIPE_BOX_API_DATABASE_PASSWORD"] } %>
   cache:
     <<: *primary_production
     database: recipe_box_api_production_cache
