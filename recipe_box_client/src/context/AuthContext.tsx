@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const login = async (email: string, password: string) => {
-        const response = await api.post('/login', { user: { email, password } });
+        const response = await api.post('/api/login', { user: { email, password } });
         const authToken = response.headers['authorization']?.split(' ')[1];
         if (authToken) {
             localStorage.setItem('token', authToken);
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signup = async (email: string, password: string, username: string) => {
-        const response = await api.post('/signup', {
+        const response = await api.post('/api/signup', {
             user: { email, password, password_confirmation: password, username },
         });
         const authToken = response.headers['authorization']?.split(' ')[1];
@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken(null);
         setUser(null);
         // Optionally call API to invalidate token
-        api.delete('/logout').catch(() => { });
+        api.delete('/api/logout').catch(() => { });
     };
 
     return (
