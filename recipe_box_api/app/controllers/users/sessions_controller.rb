@@ -6,13 +6,20 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
+    membership = resource.household_members.first
     render json: {
       status: { code: 200, message: 'Logged in successfully.' },
       data: {
         id: resource.id,
         email: resource.email,
         username: resource.username,
-        created_at: resource.created_at
+        created_at: resource.created_at,
+        household: membership&.household ? {
+          id: membership.household.id,
+          name: membership.household.name,
+          invite_code: membership.household.invite_code,
+          role: membership.role
+        } : nil
       }
     }, status: :ok
   end

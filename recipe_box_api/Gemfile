@@ -52,11 +52,13 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "pundit-matchers"
 end
 
 gem "devise"
 gem "devise-jwt"
 gem "jsonapi-serializer"
 gem "httparty"
+gem "pundit"
 
 gem "letter_opener", "~> 1.10", :groups => [:development, :test]

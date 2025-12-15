@@ -5,14 +5,18 @@ class Household < ApplicationRecord
   has_many :meal_plans, dependent: :destroy
   has_many :shopping_list_items, dependent: :destroy
 
-  before_create :generate_invite_code
+  before_create :set_invite_code
 
   validates :name, presence: true
   validates :invite_code, uniqueness: true, allow_nil: true
 
+  def regenerate_invite_code!
+    update!(invite_code: SecureRandom.hex(4).upcase)
+  end
+
   private
 
-  def generate_invite_code
+  def set_invite_code
     self.invite_code ||= SecureRandom.hex(4).upcase
   end
 end

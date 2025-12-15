@@ -12,6 +12,7 @@
   - `rack-cors`: Cross-Origin Resource Sharing
   - `nokogiri`: HTML parsing for recipe imports
   - `httparty`: HTTP requests
+  - `pundit`: Policy-based authorization
 
 ### Frontend
 - **Framework:** React 18
@@ -87,7 +88,7 @@ The application is fully containerized with Docker.
 ## Household Role System
 
 ### Overview
-Recipe Box uses a **household-based role system** with thematic kitchen titles.
+Recipe Box uses a **household-based role system** with thematic kitchen titles, powered by **Pundit** for authorization.
 
 ### Roles
 | Role | Permission Level | Description |
@@ -97,10 +98,21 @@ Recipe Box uses a **household-based role system** with thematic kitchen titles.
 | **Line Cook** | Helper/Viewer | Read-only. Can use Cook Mode and check off items. |
 
 ### Implementation
+- **Gem:** [Pundit](https://github.com/varvet/pundit) for policy-based authorization
 - Roles stored in `household_members.role` as integer enum
-- Authorization via `RoleAuthorization` concern with helpers:
-  - `require_head_chef!` - Admin-only endpoints
-  - `require_sous_chef_or_above!` - Editor endpoints
+- Each resource has a Policy class (e.g., `RecipePolicy`, `PantryItemPolicy`)
+- Policies use `HouseholdMember` permission helpers:
+  - `can_manage_members?` - Head Chef only
+  - `can_edit_recipes?` - Head Chef + Sous Chef
+  - `can_edit_pantry?` - Head Chef + Sous Chef
+
+### Signup Flow
+| Signup Type | Role Assigned | Household Action |
+|-------------|---------------|------------------|
+| **Create Kitchen** | Head Chef | Creates new household (automatic) |
+| **Join Kitchen** | Sous Chef/Line Cook | Joins via invite code |
+
+> **Note:** Head Chef cannot be self-assigned. Users become Head Chef only by creating a new household or being promoted by an existing Head Chef.
 
 ### Admin Endpoints
 | Endpoint | Method | Description |

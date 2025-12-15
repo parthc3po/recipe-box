@@ -97,6 +97,10 @@ erDiagram
 
 ### 2. Household Management
 - **Households**: Users can create or join a household using an invite code.
+- **Signup Options**:
+  - **Create My Kitchen**: Starts a new household. User becomes **Head Chef** automatically.
+  - **Join Kitchen**: Enter an invite code to join an existing household as **Sous Chef** or **Line Cook**.
+- **Head Chef Restriction**: Cannot self-assign Head Chef role during signup—only by creating a new kitchen or being promoted.
 - **Collaboration**: All household members share access to meal plans, pantry, and shopping lists.
 - **Dietary Preferences**: Set household dietary rules (Vegetarian, Gluten-Free, etc.) for recipe warnings.
 
@@ -128,7 +132,10 @@ erDiagram
 - **Cooking Dashboard**: Track meals cooked, favorite recipes, and total cooking time.
 - **Recipe Popularity**: See which recipes are cooked most often.
 ### 7. Household Roles & Permissions
-- **Head Chef**: The household admin. Full control over settings, member management, and invite codes. Access to the Admin Dashboard.
+- **Head Chef**: The household admin. Full control over settings, member management, and invite codes.
+  - Can view and copy invite code in Settings
+  - Can regenerate invite code (invalidates old code)
+  - Access to the Admin Dashboard
 - **Sous Chef**: Can manage recipes, meal plans, and pantry. Cannot manage household members.
 - **Line Cook**: Read-only access. Can use Cook Mode and view recipes but cannot make changes.
 

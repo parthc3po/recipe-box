@@ -44,7 +44,11 @@ Rails.application.routes.draw do
           post :generate
         end
       end
-      resources :households, only: %i[show update]
+      resources :households, only: %i[show update] do
+        member do
+          post :regenerate_invite_code
+        end
+      end
 
       # Admin Panel
       namespace :admin do

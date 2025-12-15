@@ -1,12 +1,18 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { UserPlus, AlertCircle } from 'lucide-react';
+import { UserPlus, AlertCircle, Home, Users } from 'lucide-react';
+
+type SignupType = 'create_kitchen' | 'join_kitchen';
+type Role = 'sous_chef' | 'line_cook';
 
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [signupType, setSignupType] = useState<SignupType>('create_kitchen');
+    const [inviteCode, setInviteCode] = useState('');
+    const [role, setRole] = useState<Role>('sous_chef');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { signup } = useAuth();
@@ -18,7 +24,7 @@ export default function Signup() {
         setIsLoading(true);
 
         try {
-            await signup(email, password, username);
+            await signup(email, password, username, signupType, inviteCode, role);
             navigate('/');
         } catch (err: unknown) {
             const error = err as { response?: { data?: { status?: { message?: string } } } };
@@ -48,6 +54,68 @@ export default function Signup() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Signup Type Toggle */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setSignupType('create_kitchen')}
+                                className={`p-4 rounded-lg border-2 transition flex flex-col items-center gap-2 ${signupType === 'create_kitchen'
+                                        ? 'border-teal-500 bg-teal-500/20 text-white'
+                                        : 'border-white/20 text-gray-400 hover:border-white/40'
+                                    }`}
+                            >
+                                <Home className="w-6 h-6" />
+                                <span className="text-sm font-medium">Create Kitchen</span>
+                                <span className="text-xs text-gray-500">Start your own</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setSignupType('join_kitchen')}
+                                className={`p-4 rounded-lg border-2 transition flex flex-col items-center gap-2 ${signupType === 'join_kitchen'
+                                        ? 'border-teal-500 bg-teal-500/20 text-white'
+                                        : 'border-white/20 text-gray-400 hover:border-white/40'
+                                    }`}
+                            >
+                                <Users className="w-6 h-6" />
+                                <span className="text-sm font-medium">Join Kitchen</span>
+                                <span className="text-xs text-gray-500">Use invite code</span>
+                            </button>
+                        </div>
+
+                        {/* Invite Code + Role (only for join) */}
+                        {signupType === 'join_kitchen' && (
+                            <>
+                                <div>
+                                    <label htmlFor="inviteCode" className="block text-sm font-medium text-gray-300 mb-2">
+                                        Invite Code
+                                    </label>
+                                    <input
+                                        id="inviteCode"
+                                        type="text"
+                                        value={inviteCode}
+                                        onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition uppercase tracking-widest font-mono"
+                                        placeholder="ABCD1234"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-2">
+                                        Your Role
+                                    </label>
+                                    <select
+                                        id="role"
+                                        value={role}
+                                        onChange={(e) => setRole(e.target.value as Role)}
+                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+                                    >
+                                        <option value="sous_chef" className="bg-slate-800">Sous Chef (Can edit)</option>
+                                        <option value="line_cook" className="bg-slate-800">Line Cook (View only)</option>
+                                    </select>
+                                </div>
+                            </>
+                        )}
+
                         <div>
                             <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
                                 Username
@@ -99,7 +167,7 @@ export default function Signup() {
                             disabled={isLoading}
                             className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold rounded-lg hover:from-green-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {isLoading ? 'Creating account...' : 'Create Account'}
+                            {isLoading ? 'Creating account...' : signupType === 'create_kitchen' ? 'Create My Kitchen' : 'Join Kitchen'}
                         </button>
                     </form>
 

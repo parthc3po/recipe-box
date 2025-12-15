@@ -6,7 +6,7 @@ RSpec.describe MealPlanGeneratorService do
   let(:user) { create(:user) }
   let!(:household) do
     h = Household.create!(name: "Test Household")
-    user.household_members.create!(household: h, role: 'admin')
+    user.household_members.create!(household: h, role: :head_chef)
     h
   end
 
