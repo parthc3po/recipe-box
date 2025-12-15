@@ -142,3 +142,26 @@ Recipe Box uses a **household-based role system** with thematic kitchen titles, 
 | Variable | Description |
 |----------|-------------|
 | `VITE_API_URL` | Backend API base URL |
+
+## Console Administration
+
+Common tasks to perform in the Rails console (`rails c`).
+
+### Change User Role
+```ruby
+# Find user by email
+user = User.find_by(email: 'john@example.com')
+
+# Get their household membership
+member = user.household_members.first
+
+# Update role (options: :head_chef, :sous_chef, :line_cook)
+member.update(role: :head_chef)
+```
+
+### Reset Invite Code manually
+```ruby
+household = Household.find_by(name: "John's Kitchen")
+household.regenerate_invite_code!
+puts household.invite_code
+```
