@@ -67,6 +67,16 @@ export default function Layout() {
                         })}
                     </nav>
 
+                    {/* Household Name */}
+                    {user?.household?.name && (
+                        <div className="px-4 py-3 border-t border-white/10">
+                            <div className="flex items-center gap-2 text-gray-400">
+                                <Home className="w-4 h-4" />
+                                <span className="text-sm font-medium truncate">{user.household.name}</span>
+                            </div>
+                        </div>
+                    )}
+
                     {/* User Profile */}
                     <div className="p-4 border-t border-white/10">
                         <div className="flex items-center gap-3 mb-3">

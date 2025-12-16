@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { Plus, Clock, Users, Search, ChefHat, Package } from 'lucide-react';
 
@@ -16,10 +17,14 @@ interface Recipe {
 }
 
 export default function RecipeList() {
+    const { user } = useAuth();
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [pantryMode, setPantryMode] = useState(false);
+
+    // Line Cooks cannot add/edit recipes
+    const canEditRecipes = user?.household?.role === 'head_chef' || user?.household?.role === 'sous_chef';
 
     useEffect(() => {
         fetchRecipes();
@@ -61,7 +66,7 @@ export default function RecipeList() {
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 className="text-2xl font-bold text-white">My Recipes</h2>
+                <h2 className="text-2xl font-bold text-white">Our Recipes</h2>
                 <div className="flex gap-2 w-full sm:w-auto flex-wrap">
                     <button
                         onClick={() => setPantryMode(!pantryMode)}
@@ -87,13 +92,15 @@ export default function RecipeList() {
                             </div>
                         </form>
                     )}
-                    <Link
-                        to="/recipes/new"
-                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition"
-                    >
-                        <Plus className="w-5 h-5" />
-                        <span className="hidden sm:inline">Add Recipe</span>
-                    </Link>
+                    {canEditRecipes && (
+                        <Link
+                            to="/recipes/new"
+                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition"
+                        >
+                            <Plus className="w-5 h-5" />
+                            <span className="hidden sm:inline">Add Recipe</span>
+                        </Link>
+                    )}
                 </div>
             </div>
 
@@ -101,14 +108,18 @@ export default function RecipeList() {
                 <div className="text-center py-12 bg-white/5 rounded-xl border border-white/10">
                     <ChefHat className="w-16 h-16 text-gray-500 mx-auto mb-4" />
                     <h3 className="text-xl font-medium text-white mb-2">No recipes yet</h3>
-                    <p className="text-gray-400 mb-6">Start building your recipe collection!</p>
-                    <Link
-                        to="/recipes/new"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition"
-                    >
-                        <Plus className="w-5 h-5" />
-                        Add Your First Recipe
-                    </Link>
+                    <p className="text-gray-400 mb-6">
+                        {canEditRecipes ? 'Start building your recipe collection!' : 'Your household has no recipes yet.'}
+                    </p>
+                    {canEditRecipes && (
+                        <Link
+                            to="/recipes/new"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition"
+                        >
+                            <Plus className="w-5 h-5" />
+                            Add Your First Recipe
+                        </Link>
+                    )}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

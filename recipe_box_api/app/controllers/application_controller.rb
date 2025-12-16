@@ -8,7 +8,9 @@ class ApplicationController < ActionController::API
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[username signup_type invite_code])
+    # Only permit username for User model - signup_type, invite_code, and role
+    # are handled separately in RegistrationsController#setup_household
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[username])
     devise_parameter_sanitizer.permit(:account_update, keys: %i[username])
   end
 

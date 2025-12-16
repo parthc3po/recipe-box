@@ -6,9 +6,10 @@ class Api::V1::RecipesController < ApplicationController
 
   # GET /api/v1/recipes
   def index
-    @recipes = current_user.recipes
+    # Use policy_scope to get all household recipes, not just current user's
+    @recipes = policy_scope(Recipe)
     @recipes = @recipes.search(params[:query]) if params[:query].present?
-    
+
     if params[:filter] == 'cookable'
       household = current_user.households.first
       if household
@@ -18,7 +19,7 @@ class Api::V1::RecipesController < ApplicationController
         @recipes = Recipe.none
       end
     end
-    
+
     render json: {
       status: { code: 200 },
       data: @recipes.as_json(include: { recipe_ingredients: { include: :ingredient } })
@@ -35,8 +36,8 @@ class Api::V1::RecipesController < ApplicationController
 
     pantry_ingredient_ids = household.pantry_items.pluck(:ingredient_id)
 
-    # Get all user recipes with missing ingredient count
-    recipes_with_missing = current_user.recipes
+    # Get all household recipes with missing ingredient count
+    @recipes = policy_scope(Recipe)
       .left_joins(:recipe_ingredients)
       .select(
         'recipes.*',
@@ -48,7 +49,7 @@ class Api::V1::RecipesController < ApplicationController
 
     render json: {
       status: { code: 200 },
-      data: recipes_with_missing.map do |recipe|
+      data: @recipes.map do |recipe|
         recipe.as_json.merge(
           missing_count: recipe.missing_count.to_i,
           total_ingredients: recipe.total_ingredients.to_i,
@@ -69,6 +70,7 @@ class Api::V1::RecipesController < ApplicationController
   # POST /api/v1/recipes
   def create
     @recipe = current_user.recipes.build(recipe_params)
+    authorize @recipe
 
     if @recipe.save
       render json: {
@@ -84,6 +86,7 @@ class Api::V1::RecipesController < ApplicationController
 
   # PATCH/PUT /api/v1/recipes/:id
   def update
+    authorize @recipe
     if @recipe.update(recipe_params)
       render json: {
         status: { code: 200, message: 'Recipe updated successfully.' },
@@ -98,6 +101,7 @@ class Api::V1::RecipesController < ApplicationController
 
   # DELETE /api/v1/recipes/:id
   def destroy
+    authorize @recipe
     @recipe.destroy
     render json: {
       status: { code: 200, message: 'Recipe deleted successfully.' }
@@ -107,7 +111,8 @@ class Api::V1::RecipesController < ApplicationController
   private
 
   def set_recipe
-    @recipe = current_user.recipes.find(params[:id])
+    # Allow viewing any household recipe, not just current user's
+    @recipe = policy_scope(Recipe).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { status: { code: 404, message: 'Recipe not found.' } }, status: :not_found
   end

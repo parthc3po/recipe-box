@@ -132,12 +132,25 @@ erDiagram
 - **Cooking Dashboard**: Track meals cooked, favorite recipes, and total cooking time.
 - **Recipe Popularity**: See which recipes are cooked most often.
 ### 7. Household Roles & Permissions
+
+All household members can view recipes, pantry, meal plans, and shopping lists from their household. Permissions vary by role:
+
+| Permission | Head Chef | Sous Chef | Line Cook |
+|------------|:---------:|:---------:|:---------:|
+| View all household recipes | ✅ | ✅ | ✅ |
+| Add/Edit own recipes | ✅ | ✅ | ❌ |
+| Add/Edit pantry items | ✅ | ✅ | ❌ |
+| Add/Edit meal plans | ✅ | ✅ | ❌ |
+| Add to shopping list | ✅ | ✅ | ✅ |
+| Edit/Delete shopping items | ✅ | ✅ | ❌ |
+| View invite code | ✅ | ❌ | ❌ |
+| Regenerate invite code | ✅ | ❌ | ❌ |
+| Manage household members | ✅ | ❌ | ❌ |
+| Use Cook Mode | ✅ | ✅ | ✅ |
+
 - **Head Chef**: The household admin. Full control over settings, member management, and invite codes.
-  - Can view and copy invite code in Settings
-  - Can regenerate invite code (invalidates old code)
-  - Access to the Admin Dashboard
-- **Sous Chef**: Can manage recipes, meal plans, and pantry. Cannot manage household members.
-- **Line Cook**: Read-only access. Can use Cook Mode and view recipes but cannot make changes.
+- **Sous Chef**: Can add/edit recipes, meal plans, and pantry. Cannot manage household members or invite codes.
+- **Line Cook**: Read-only access. Can view recipes and use Cook Mode but cannot make changes. The "Add Recipe" button is hidden for Line Cooks.
 
 ### 8. Admin Dashboard (Head Chef Only)
 - **Overview Stats**: View total members, recipe counts, and membership breakdown.

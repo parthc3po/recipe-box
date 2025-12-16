@@ -60,7 +60,7 @@ class Api::V1::PantryItemsController < ApplicationController
     @household = current_user.households.first
     unless @household
       @household = Household.create!(name: "#{current_user.username || 'My'}'s Kitchen")
-      current_user.household_members.create!(household: @household, role: 'admin')
+      current_user.household_members.create!(household: @household, role: :head_chef)
     end
   end
 
