@@ -107,15 +107,15 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Settings className="w-7 h-7" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+          <Settings className="w-6 h-6 sm:w-7 sm:h-7" />
           Kitchen Settings
         </h2>
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 transition"
+          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 transition text-sm sm:text-base"
         >
           {isSaving ? (
             <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
@@ -145,27 +145,29 @@ export default function SettingsPage() {
             Share this code with family members so they can join your kitchen.
           </p>
 
-          <div className="flex items-center gap-3">
-            <div className="flex-1 bg-white/10 rounded-lg px-4 py-3 font-mono text-xl tracking-widest text-white text-center border border-white/20">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+            <div className="flex-1 bg-white/10 rounded-lg px-4 py-3 font-mono text-lg sm:text-xl tracking-widest text-white text-center border border-white/20">
               {household.invite_code}
             </div>
-            <button
-              onClick={copyInviteCode}
-              className={`px-4 py-3 rounded-lg font-medium transition flex items-center gap-2 ${copied
-                ? 'bg-green-500 text-white'
-                : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
-            >
-              {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-              {copied ? 'Copied!' : 'Copy'}
-            </button>
-            <button
-              onClick={regenerateInviteCode}
-              className="px-4 py-3 rounded-lg bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white transition"
-              title="Generate new code"
-            >
-              <RefreshCw className="w-5 h-5" />
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={copyInviteCode}
+                className={`flex-1 sm:flex-none px-4 py-3 rounded-lg font-medium transition flex items-center justify-center gap-2 ${copied
+                  ? 'bg-green-500 text-white'
+                  : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
+              >
+                {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
+              <button
+                onClick={regenerateInviteCode}
+                className="px-4 py-3 rounded-lg bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white transition"
+                title="Generate new code"
+              >
+                <RefreshCw className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       )}

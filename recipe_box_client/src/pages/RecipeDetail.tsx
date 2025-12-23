@@ -122,32 +122,32 @@ export default function RecipeDetail() {
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <button
                     onClick={() => navigate('/recipes')}
-                    className="flex items-center gap-2 text-gray-400 hover:text-white transition"
+                    className="flex items-center gap-2 text-gray-400 hover:text-white transition w-fit"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back to Recipes
                 </button>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2 text-sm sm:text-base">
                     <Link
                         to={`/recipes/${id}/cook`}
-                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg hover:from-green-600 hover:to-teal-600 transition"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg hover:from-green-600 hover:to-teal-600 transition"
                     >
                         <ChefHat className="w-4 h-4" />
-                        Start Cooking
+                        <span className="whitespace-nowrap">Start Cooking</span>
                     </Link>
                     <Link
                         to={`/recipes/${id}/edit`}
-                        className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition"
                     >
                         <Edit className="w-4 h-4" />
                         Edit
                     </Link>
                     <button
                         onClick={handleDelete}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition"
                     >
                         <Trash2 className="w-4 h-4" />
                         Delete
@@ -242,11 +242,25 @@ export default function RecipeDetail() {
                                 <li key={ri.id} className="text-gray-300">
                                     <div className="flex items-start gap-2">
                                         <div className="flex-1">
-                                            {scaleQuantity(ri.quantity) && (
-                                                <span className="font-medium text-white">{scaleQuantity(ri.quantity)} </span>
+                                            {ri.notes ? (
+                                                // Notes contain the full ingredient text (from imported recipes)
+                                                // Display it directly - multiplier is applied via scaled display
+                                                <span>
+                                                    {servingMultiplier !== 1 && scaleQuantity(ri.quantity) && (
+                                                        <span className="font-medium text-white">{scaleQuantity(ri.quantity)} {ri.unit && `${ri.unit} `}</span>
+                                                    )}
+                                                    {servingMultiplier === 1 ? ri.notes : ri.ingredient.name}
+                                                </span>
+                                            ) : (
+                                                // No notes - show quantity, unit, and ingredient name separately
+                                                <>
+                                                    {scaleQuantity(ri.quantity) && (
+                                                        <span className="font-medium text-white">{scaleQuantity(ri.quantity)} </span>
+                                                    )}
+                                                    {ri.unit && <span>{ri.unit} </span>}
+                                                    <span>{ri.ingredient.name}</span>
+                                                </>
                                             )}
-                                            {ri.unit && <span>{ri.unit} </span>}
-                                            <span>{ri.notes || ri.ingredient.name}</span>
                                         </div>
                                         {subs.length > 0 && (
                                             <span className="text-xs text-green-400 flex items-center gap-1">

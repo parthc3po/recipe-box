@@ -89,18 +89,19 @@ export default function ShoppingListPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                    <ShoppingCart className="w-7 h-7" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                    <ShoppingCart className="w-6 h-6 sm:w-7 sm:h-7" />
                     Shopping List
                 </h2>
                 <button
                     onClick={handleGenerate}
                     disabled={isGenerating}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-teal-500 text-white font-medium rounded-lg hover:from-green-600 hover:to-teal-600 disabled:opacity-50 transition"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-teal-500 text-white font-medium rounded-lg hover:from-green-600 hover:to-teal-600 disabled:opacity-50 transition text-sm sm:text-base"
                 >
-                    <RefreshCw className={`w-5 h-5 ${isGenerating ? 'animate-spin' : ''}`} />
-                    Generate from Meal Plan
+                    <RefreshCw className={`w-4 h-4 sm:w-5 sm:h-5 ${isGenerating ? 'animate-spin' : ''}`} />
+                    <span className="hidden sm:inline">Generate from Meal Plan</span>
+                    <span className="sm:hidden">Generate</span>
                 </button>
             </div>
 
